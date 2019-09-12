@@ -3,11 +3,18 @@
  */
 package CSCC;
 
+import CSCC.data.Entry;
+import CSCC.data.Event;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class App {
@@ -15,14 +22,27 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
+
+        logger.info("Reading user input.");
+        System.out.println("Please provide logfile.txt file path: ");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        logger.info("Please provide logfile.txt file path: ");
         try {
             String dbpath = reader.readLine();
+            reader.close();
             logger.debug("File path read: " + dbpath);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+            ObjectMapper mapper = new ObjectMapper();
+            logger.info("Processing logfile entries.");
+            LineIterator li = FileUtils.lineIterator(FileUtils.getFile(dbpath));
+            while (li.hasNext()) {
+                String jsonLine = li.nextLine();
+                logger.debug("Line read from file: " + jsonLine);
+                Event event = mapper.readValue(jsonLine, Event.class);
+                logger.debug("Parsing result: " + event.toString());
 
+            }
+            li.close();
+        } catch (IOException ioe) {
+            logger.debug(ioe.getMessage());
+        }
     }
 }
