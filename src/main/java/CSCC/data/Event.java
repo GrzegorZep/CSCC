@@ -2,24 +2,27 @@ package CSCC.data;
 
 public class Event {
 
-private String id;
-private String state;
-private String type;
-private String host;
-private String timeStamp;
+    private String id;
+    private String state;
+    private String type;
+    private String host;
+    private String timestamp;
 
-    public Event(String id, String state, String timeStamp) {
-        this.id = id;
-        this.state = state;
-        this.timeStamp = timeStamp;
+    public Event() {
     }
 
-    public Event(String id, String state, String type, String host, String timeStamp) {
+    public Event(String id, String state, String timestamp) {
+        this.id = id;
+        this.state = state;
+        this.timestamp = timestamp;
+    }
+
+    public Event(String id, String state, String type, String host, String timestamp) {
         this.id = id;
         this.state = state;
         this.type = type;
         this.host = host;
-        this.timeStamp = timeStamp;
+        this.timestamp = timestamp;
     }
 
     public String getId() {
@@ -38,7 +41,16 @@ private String timeStamp;
         return host;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
+    @Override
+    public String toString() {
+        return "{" +
+                "id='" + id + '\'' +
+                ", state='" + state + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
+
+    public String getTimestamp() {
+        return timestamp;
     }
 }

@@ -41,3 +41,6 @@ application {
     // Define the main class for the application
     mainClassName = 'CSCC.App'
 }
+run {
+    standardInput = System.in
+}
