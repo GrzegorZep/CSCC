@@ -3,44 +3,55 @@
  */
 package CSCC;
 
-import CSCC.data.Event;
 import CSCC.processing.EventHandler;
-import CSCC.processing.JsonParser;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class App {
 
     private static final Logger logger = LoggerFactory.getLogger(App.class);
+    private static String logFilePath = "logfile.txt";
 
     public static void main(String[] args) {
-
         logger.info("Reading user input.");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            logger.info("Please provide logfile.txt file path: ");
-            String dbpath = reader.readLine();
-            logger.debug("File path read: " + dbpath);
+        readFilePath();
+        logger.info("Opening logfile.");
+        try (FileInputStream fis = new FileInputStream(logFilePath)) {
+            Scanner sc = new Scanner(fis);
             logger.info("Processing logfile entries.");
-            LineIterator li = FileUtils.lineIterator(FileUtils.getFile(dbpath));
-            JsonParser jsonParser = new JsonParser();
-            EventHandler eventHandler = new EventHandler();
-            while (li.hasNext()) {
-                String jsonLine = li.nextLine();
-                logger.debug("Line read from file: " + jsonLine);
-                Event event = jsonParser.retrieve(jsonLine);
-                logger.debug("Parsing result: " + event.toString());
-                eventHandler.process(event);
+            EventHandler eventHandler = EventHandler.getInstance();
+            while (sc.hasNextLine()) {
+                String fileLine = sc.nextLine();
+                logger.debug("Line read from file: " + fileLine);
+                eventHandler.createEvent(fileLine);
+                logger.debug("Event after parsing: " + eventHandler.getEvent().toString());
+                eventHandler.insertEvent();
             }
-            li.close();
+            eventHandler.commitEventsAndShutdown();
         } catch (IOException ioe) {
             logger.error(ioe.getMessage());
         }
         logger.info("Processing has been finished.");
+    }
+
+    private static void readFilePath() {
+        String filePath = "";
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            logger.info("Please provide logfile.txt file path: ");
+            filePath = reader.readLine();
+            logger.debug("File path read: " + filePath);
+            if (!filePath.isEmpty())
+                logFilePath = filePath;
+            else
+                logger.info("Processing project's default logfile.");
+        } catch (IOException ioe) {
+            logger.error(ioe.getMessage());
+        }
     }
 }

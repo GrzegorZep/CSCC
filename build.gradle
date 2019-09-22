@@ -43,4 +43,5 @@ application {
 }
 run {
     standardInput = System.in
+//    System.setProperty("hsqldb.reconfig_logging", "false");
 }

@@ -41,6 +41,10 @@ public class Event {
         return host;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -48,9 +52,5 @@ public class Event {
                 ", state='" + state + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
-    }
-
-    public String getTimestamp() {
-        return timestamp;
     }
 }

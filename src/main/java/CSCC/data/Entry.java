@@ -7,7 +7,7 @@ public class Entry {
     private String host;
     private String timeStarted;
     private String timeFinished;
-    private boolean moreThan4ms;
+    private boolean alert;
 
     public String getId() {
         return id;
@@ -49,12 +49,12 @@ public class Entry {
         this.timeFinished = timeFinished;
     }
 
-    public boolean isMoreThan4ms() {
-        return moreThan4ms;
+    public boolean isAlert() {
+        return alert;
     }
 
-    public void setMoreThan4ms(boolean moreThan4ms) {
-        this.moreThan4ms = moreThan4ms;
+    public void setAlert(boolean alert) {
+        this.alert = alert;
     }
 }
 
