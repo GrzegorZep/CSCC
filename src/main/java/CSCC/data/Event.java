@@ -1,5 +1,7 @@
 package CSCC.data;
 
+import java.util.Objects;
+
 public class Event {
 
     private String id;
@@ -52,5 +54,20 @@ public class Event {
                 ", state='" + state + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) &&
+                Objects.equals(state, event.state) &&
+                Objects.equals(timestamp, event.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state, timestamp);
     }
 }
