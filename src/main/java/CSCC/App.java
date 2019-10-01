@@ -26,14 +26,15 @@ public class App {
             Scanner sc = new Scanner(fis);
             logger.info("Processing logfile entries.");
             EventHandler eventHandler = EventHandler.getInstance();
+            eventHandler.createEventTable();
             while (sc.hasNextLine()) {
                 String fileLine = sc.nextLine();
                 logger.debug("Line read from file: " + fileLine);
-                eventHandler.createEvent(fileLine);
+                eventHandler.createEventFromJson(fileLine);
                 logger.debug("Event after parsing: " + eventHandler.getEvent().toString());
-                eventHandler.insertEvent();
+                eventHandler.insertCurrentEventIntoDB();
             }
-            eventHandler.commitEventsAndShutdown();
+            eventHandler.commitChangesAndShutdownDB();
         } catch (IOException ioe) {
             logger.error(ioe.getMessage());
         }
