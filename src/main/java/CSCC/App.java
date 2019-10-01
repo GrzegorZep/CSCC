@@ -44,7 +44,7 @@ public class App {
     private static void readFilePath() {
         String filePath = "";
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            logger.info("Please provide logfile.txt file path: ");
+            logger.info("Please provide logfile.txt file path or press Enter for default one");
             filePath = reader.readLine();
             logger.debug("File path read: " + filePath);
             if (!filePath.isEmpty())
